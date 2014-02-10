@@ -1,0 +1,57 @@
+Title
+========================================================
+
+We'll skip the data munging portion: just remember that this is, in general, the actual hard part. Here, Matt Jockers has done most of it, and then I did the step that actually tokenizes the words.
+
+```{r}
+library(rjson)
+library(reshape2)
+fed = scan("federalist.json",what="raw",sep="\f",quote="")
+all = fromJSON(fed)
+library(plyr)
+framed = ldply(all,function(paper) {
+  cat(paper$title,"\n")
+  data.frame(
+    title = paper$title,
+    author=paper$author,
+    words=paper$words,
+    position = 1:length(paper$words)
+      )
+})
+
+framed$num = as.integer(gsub("\\D","",framed$title))
+table(framed$num)
+```
+
+
+Building a bag-of-words matrix
+==============================
+This is the first step.
+
+```{r fig.width=7, fig.height=6}
+dtm = table(framed$num,framed$words)
+```
+
+
+Principal Components
+====================
+```{r}
+comps = prcomp(log(dtm+.1))
+dtm %*% comps$rotation[,1:5]
+classifiers = ddply(framed,.(num,author),function(f) {data.frame(1)})
+classifiers = cbind(classifiers, dtm %*% comps$rotation[,1:5])
+head(classifiers)
+library(ggplot2)
+ggplot(classifiers) + geom_text(aes(x=PC1,y=PC2,color=author,label=num))
+ggplot(classifiers) + geom_text(aes(x=PC3,y=PC4,color=author,label=num))
+```
+
+
+K-nearest neighbor
+==================
+
+```{r}
+library(class)
+knn.cv(log(dtm[classifiers$author %in% c("HAMILTON","MADISON","JAY"),]+.1),classifiers$author[classifiers$author %in% c("HAMILTON","MADISON","JAY")],7) 
+
+```
