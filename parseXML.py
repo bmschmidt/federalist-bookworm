@@ -14,29 +14,26 @@ dom = parseString(data)
 
 papers = dom.getElementsByTagName("div")
 
-
-def words(paraset): #quick-n-dirty tokenization
-    all = " ".join(paraset)
-    all = re.sub("[^A-Za-z]"," ",all) #kill punctuation
-    all = re.sub("  +"," ",all) #only one break
-    words = all.split(" ")
-    return words
-
-def parse(paper):
+def parse(paper,papernum):
     out = dict()
+    paragraph = 1
     for metadataField in ["title","author"]:
         out[metadataField] = paper.getElementsByTagName(metadataField)[0].childNodes[0].data
-    out["paragraphs"] = [n.firstChild.data for n in paper.getElementsByTagName("text")[0].getElementsByTagName("p")]
-    out["words"] = words(out["paragraphs"]) 
-    return out
+    for pargroup in paper.getElementsByTagName("text")[0].getElementsByTagName("p"):
+        entry = out
+        text = pargroup.firstChild.data
+        text = re.sub("[\n\r]","",text)
+        entry['filename'] = str(papernum) + "-" + str(paragraph)
+        entry['paragraphNumber'] = str(paragraph)
+        output.write(entry['filename'] + "\t" + text + "\n")
+        jsoncatalog.write(json.dumps(entry) + "\n")
+        paragraph += 1
     
-all = [parse(paper) for paper in papers]
+output = open("input.txt","w")
+jsoncatalog = open("jsoncatalog.txt","w")
 
 
-    
-output = open("federalist.json","w")
-
-string = json.dumps(all)
-
-output.write(string)
-
+n=1
+for paper in papers:
+    parse(paper,papernum=n)
+    n += 1
