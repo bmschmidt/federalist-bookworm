@@ -1,6 +1,8 @@
 
 #### Here's the stuff that makes the stuff needed for the bookworm.
 
+
+
 input.txt:
 	python parseXML.py
 
@@ -8,11 +10,11 @@ input.txt:
 jsoncatalog.txt:
 	python parseXML.py
 
-
 #### Here's the stuff that makes the bookworm
 
 bookworm:
 	git clone git@github.com:bmschmidt/Presidio bookworm
+	cd bookworm; git checkout lessDiskSpace
 	mkdir -p bookworm/files
 	mkdir -p bookworm/files/metadata
 	mkdir -p bookworm/files/texts
@@ -23,10 +25,13 @@ bookworm/files/texts/input.txt: input.txt
 bookworm/files/metadata/jsoncatalog.txt: jsoncatalog.txt
 	cp $< $@
 
-bookwormdatabase: bookworm bookworm/files/texts/input.txt bookworm/files/metadata/jsoncatalog.txt
-	cd bookworm; git checkout dev;
+bookworm/bookworm.cnf: bookworm
+	python bookworm/scripts/makeConfiguration.py
+
+bookwormdatabase: bookworm bookworm/bookworm.cnf bookworm/files/texts/input.txt bookworm/files/metadata/jsoncatalog.txt
+	cd bookworm; git checkout lessDiskSpace;
 	cd bookworm; python scripts/guessAtDerivedCatalog.py
-	cd bookworm; make all bookwormName=federalist
+	cd bookworm; make all
 
 
 ### And some cleaning methods
