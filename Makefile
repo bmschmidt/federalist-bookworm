@@ -3,14 +3,12 @@
 
 webpages:
 	mkdir webpages
-	cat input.txt | perl -ne 'if (m/^(\d+)-(\d+)\t(.*)$$/) {$$doc=$$1;$$par=$$2;$$text=$$3;open(INPUT,">>webpages/$$doc.html"); print INPUT "<p id=p$$2>$$text</p>"}'
 
-
-input.txt:
+input.txt: webpages
 	python parseXML.py
 
 #this one is redundant, but just for clarity:
-jsoncatalog.txt:
+jsoncatalog.txt: webpages
 	python parseXML.py
 
 #### Here's the stuff that makes the bookworm
