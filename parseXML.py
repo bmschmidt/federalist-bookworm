@@ -29,7 +29,8 @@ def parse(paper,papernum):
             outputPage.write("\n<div id=%d><b>%d</b>: %s</div>\n" %(paragraph,paragraph,text))
             entry['filename'] = str(papernum) + "-" + str(paragraph)
             entry['paragraphNumber'] = str(paragraph)
-            entry['searchstring'] = "<a href=">
+            author = entry['author']
+            entry['searchstring'] = "<a href=http://bmschmidt.github.io/federalist-bookworm/%(papernum)d.htm#%(paragraph)d>Federalist no. %(papernum)d (%(author)s)paragraph %(paragraph)d</a>" %(locals())
             output.write(entry['filename'] + "\t" + text + "\n")
             jsoncatalog.write(json.dumps(entry) + "\n")
             paragraph += 1
