@@ -15,7 +15,7 @@ jsoncatalog.txt: webpages
 
 bookworm:
 	git clone git@github.com:bmschmidt/Presidio bookworm
-	cd bookworm; git checkout lessDiskSpace
+	cd bookworm; git checkout dev
 	mkdir -p bookworm/files
 	mkdir -p bookworm/files/metadata
 	mkdir -p bookworm/files/texts
@@ -28,9 +28,10 @@ bookworm/files/metadata/jsoncatalog.txt: jsoncatalog.txt
 
 bookworm/bookworm.cnf: bookworm
 	python bookworm/scripts/makeConfiguration.py
+	mv bookworm.cnf $@
 
 bookwormdatabase: bookworm bookworm/bookworm.cnf bookworm/files/texts/input.txt bookworm/files/metadata/jsoncatalog.txt
-	cd bookworm; git checkout lessDiskSpace;
+	cd bookworm; git checkout dev
 	cd bookworm; python scripts/guessAtDerivedCatalog.py
 	cd bookworm; make all
 
