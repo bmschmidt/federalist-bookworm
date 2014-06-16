@@ -26,11 +26,7 @@ bookworm/files/texts/input.txt: input.txt
 bookworm/files/metadata/jsoncatalog.txt: jsoncatalog.txt
 	cp $< $@
 
-bookworm/bookworm.cnf: bookworm
-	python bookworm/scripts/makeConfiguration.py
-	mv bookworm.cnf $@
-
-bookwormdatabase: bookworm bookworm/bookworm.cnf bookworm/files/texts/input.txt bookworm/files/metadata/jsoncatalog.txt
+bookwormdatabase: bookworm bookworm/files/texts/input.txt bookworm/files/metadata/jsoncatalog.txt
 	cd bookworm; git checkout dev
 	cd bookworm; python scripts/guessAtDerivedCatalog.py
 	cd bookworm; make all
