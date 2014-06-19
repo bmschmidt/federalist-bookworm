@@ -9,7 +9,7 @@ The Makefile will pull the Bookworm repository and try to build a Bookworm based
 
 ``` {sh}
 git clone git@github.com:bmschmidt/federalist.git
-cd federalist; make bookwormdatabase
+cd federalist; make federalistdatabase
 ```
 
 That's useful if you want to know if your system is running Bookworm properly.
