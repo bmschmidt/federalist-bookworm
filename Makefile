@@ -15,7 +15,7 @@ jsoncatalog.txt: webpages
 
 federalist:
 	git clone git@github.com:bmschmidt/Presidio federalist
-	cd federalist; git checkout dev
+	cd federalist; git checkout master
 	mkdir -p federalist/files
 	mkdir -p federalist/files/metadata
 	mkdir -p federalist/files/texts
@@ -27,7 +27,7 @@ federalist/files/metadata/jsoncatalog.txt: jsoncatalog.txt
 	cp $< $@
 
 federalistdatabase: federalist federalist/files/texts/input.txt federalist/files/metadata/jsoncatalog.txt
-	cd federalist; git checkout dev
+	cd federalist; git checkout master
 	cd federalist; python scripts/guessAtDerivedCatalog.py
 	cd federalist; make all
 
