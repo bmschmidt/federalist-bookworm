@@ -20,14 +20,8 @@ federalist:
 	mkdir -p federalist/files/metadata
 	mkdir -p federalist/files/texts
 
-federalist/files/texts/input.txt: input.txt
-	cp $< $@
-
-federalist/files/metadata/jsoncatalog.txt: jsoncatalog.txt
-	cp $< $@
-
-federalistdatabase: federalist federalist/files/texts/input.txt federalist/files/metadata/jsoncatalog.txt
-	cd federalist; git checkout master
+federalistdatabase: federalist input.txt jsoncatalog.txt
+	cd federalist; git checkout master; make files/metadata/jsoncatalog.txt;
 	cd federalist; python scripts/guessAtDerivedCatalog.py
 	cd federalist; make all
 
