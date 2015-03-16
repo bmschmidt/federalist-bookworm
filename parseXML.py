@@ -18,6 +18,7 @@ def parse(paper,papernum):
     outputPage = open("webpages/" + str(papernum) + ".htm","w")
     outputPage.write("<h1>Federalist no. %d</h1>\n" %papernum)
     out = dict()
+    out['fedNumber'] = str(papernum)
     paragraph = 1
     for metadataField in ["title","author"]:
         out[metadataField] = paper.getElementsByTagName(metadataField)[0].childNodes[0].data
