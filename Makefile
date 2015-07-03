@@ -14,7 +14,7 @@ jsoncatalog.txt: webpages
 #### Here's the stuff that makes the federalist
 
 federalist:
-	git clone git@github.com:bmschmidt/Presidio federalist
+	git clone http://github.com/Bookworm-Project/BookwormDB federalist
 	cd federalist; git checkout master
 	mkdir -p federalist/files
 	mkdir -p federalist/files/metadata
