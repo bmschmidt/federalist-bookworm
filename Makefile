@@ -1,8 +1,7 @@
 
 #### Here's the stuff that makes the stuff needed for the federalist.
 
-all:
-	federalistdatabase
+all: federalistdatabase
 
 webpages:
 	mkdir webpages
