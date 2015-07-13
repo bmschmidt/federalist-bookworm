@@ -1,6 +1,9 @@
 
 #### Here's the stuff that makes the stuff needed for the federalist.
 
+all:
+	federalistdatabase
+
 webpages:
 	mkdir webpages
 
@@ -21,7 +24,7 @@ federalist:
 	mkdir -p federalist/files/texts
 
 federalistdatabase: federalist input.txt jsoncatalog.txt
-	cd federalist; git checkout master; make files/metadata/jsoncatalog.txt;
+	cd federalist; make files/metadata/jsoncatalog.txt;
 	cd federalist; python scripts/guessAtDerivedCatalog.py
 	cd federalist; make all
 
