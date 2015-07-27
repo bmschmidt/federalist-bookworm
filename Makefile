@@ -1,6 +1,13 @@
 
 #### Here's the stuff that makes the stuff needed for the federalist.
 
+all: input.txt jsoncatalog.txt
+# We don't make it easy to guess at field descriptions: should we?
+	bookworm build files/metadata/jsoncatalog.txt
+	bookworm prep guessAtFieldDescriptions
+# If field_descriptions existed, this would be the only thing necessary.
+	bookworm build all
+
 webpages:
 	mkdir webpages
 
@@ -13,29 +20,16 @@ jsoncatalog.txt: webpages
 
 #### Here's the stuff that makes the federalist
 
-federalist:
-	git clone git@github.com:bmschmidt/Presidio federalist
-	cd federalist; git checkout master
-	mkdir -p federalist/files
-	mkdir -p federalist/files/metadata
-	mkdir -p federalist/files/texts
-
-federalistdatabase: federalist input.txt jsoncatalog.txt
-	cd federalist; git checkout master; make files/metadata/jsoncatalog.txt;
-	cd federalist; python scripts/guessAtDerivedCatalog.py
-	cd federalist; make all
+bookworm.cnf:
+	bookworm init
 
 
-### And some cleaning methods
+clean: cleanBookworm
+	rm -f input.txt
+	rm -f jsoncatalog.txt
 
-clean:
-	rm input.txt
-	rm jsoncatalog.txt
-
-cleanFederalist:
-	rm -f federalist/files/texts/input.txt
-	rm -f federalist/files/texts/metadata/jsoncatalog.txt
-	rm -f federalist/files/texts/metadata/field_descriptions.json
-	cd federalist; make clean;
+cleanBookworm:
+	rm -f files;
+	bookworm build clean
 
 
