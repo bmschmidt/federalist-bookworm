@@ -3,7 +3,7 @@
 
 all: input.txt jsoncatalog.txt
 # We don't make it easy to guess at field descriptions: should we?
-	bookworm build files/metadata/jsoncatalog.txt
+	bookworm build .bookworm/metadata/jsoncatalog.txt
 	bookworm prep guessAtFieldDescriptions
 # If field_descriptions existed, this would be the only thing necessary.
 	bookworm build all
@@ -29,7 +29,8 @@ clean: cleanBookworm
 	rm -f jsoncatalog.txt
 
 cleanBookworm:
-	rm -f files;
-	bookworm build clean
+	bookworm build pristine
+	rm -rf files;
+
 
 
