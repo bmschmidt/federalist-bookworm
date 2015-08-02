@@ -13,3 +13,6 @@ bookworm
 federalist
 Presidio/
 webpages
+.bookworm
+files
+bookworm_Makefile
